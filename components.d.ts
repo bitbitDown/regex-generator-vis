@@ -13,15 +13,14 @@ declare module '@vue/runtime-core' {
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElOption: typeof import('element-plus/es')['ElOption']
-    ElRow: typeof import("element-plus/es")["ElRow"]
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     InputRange: typeof import('./src/components/base/inputRange.vue')['default']
+    MultiSelection: typeof import('./src/components/editor/content/multiSelection.vue')['default']
     Node: typeof import('./src/components/editor/node/index.vue')['default']
     Quantifier: typeof import('./src/components/editor/quantifier/index.vue')['default']
     TestRegex: typeof import('./src/components/test-regex/index.vue')['default']
-    Type: typeof import('./src/components/editor/content/type.vue')['default']
   }
 }

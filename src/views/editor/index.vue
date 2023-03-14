@@ -4,11 +4,30 @@ import Content from "/@/components/editor/content/index.vue";
 import Quantifier from "/@/components/editor/quantifier/index.vue";
 import TestRegex from "/@/components/test-regex/index.vue";
 import { nodeType } from "/@/constants/nodeType";
-import { ref, reactive } from "vue";
+import { ref, reactive, watch, toRaw } from "vue";
 import MaterialSymbolsAdd from "~icons/material-symbols/add";
 import MaterialSymbolsDeleteOutline from "~icons/material-symbols/delete-outline";
 import Painer from "/@/views/painer/index.vue";
 
+const contentValue = ref<Array<Object> | String>();
+const nodeVal = ref<String | undefined>("");
+watch(
+  contentValue,
+  (val) => {
+    if (toRaw(val) instanceof Array) {
+      //转化为字符串a-bc-d
+      const result = (
+        toRaw(val) as Array<{ first: string; last: string }>
+      )?.reduce((res, item) => {
+        return `${res}${item.first}-${item.last}`;
+      }, "");
+      nodeVal.value = result;
+    } else {
+      nodeVal.value = val as string;
+    }
+  },
+  { deep: true }
+);
 const nodeTypes = ref(nodeType);
 
 const rule = /[qwer]/;
@@ -52,7 +71,7 @@ function opeOfNode(value) {
             >
             </Node>
           </div>
-          <Content></Content>
+          <Content v-model="contentValue"></Content>
           <h1>量词</h1>
           <Quantifier> </Quantifier>
         </el-tab-pane>
@@ -62,7 +81,7 @@ function opeOfNode(value) {
             v-for="(item, index) in regexRows"
             :key="item.id"
           >
-            <TestRegex :rule="item.rule"></TestRegex>
+            <TestRegex :rule-name="item.rule"></TestRegex>
             <MaterialSymbolsDeleteOutline
               class="ml-2"
               @click="handleDel(index)"
@@ -72,7 +91,7 @@ function opeOfNode(value) {
         </el-tab-pane>
       </el-tabs>
     </div>
-    <Painer ref="painerRef" class="ml-2"></Painer>
+    <Painer ref="painerRef" class="ml-2" :node-value="nodeVal"></Painer>
   </div>
 </template>
 

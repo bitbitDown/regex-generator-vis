@@ -5,16 +5,16 @@ import { isRegExp, isFunction } from "/@/utils/is";
 const inputValue = ref("");
 let valid = ref(false);
 const props = defineProps({
-  rule: Function || RegExp, //校验规则
+  ruleName: Function || RegExp, //校验规则
 });
-const { rule } = toRefs(props);
+const { ruleName } = toRefs(props);
 watch(
   () => inputValue.value,
   (str) => {
-    if (isRegExp(rule.value)) {
-      valid.value = rule.value.test(str);
-    } else if (isFunction(rule.value)) {
-      valid.value = rule.value(str);
+    if (isRegExp(ruleName?.value)) {
+      valid.value = ruleName?.value?.test(str) ?? false;
+    } else if (isFunction(ruleName?.value)) {
+      valid.value = ruleName?.value(str);
     }
   }
 );

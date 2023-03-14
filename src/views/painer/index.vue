@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, computed, reactive } from "vue";
-import MaterialSymbolsAdd from "~icons/material-symbols/add";
+const props = defineProps(["nodeValue"]);
+const currentPropVal = computed(() => props.nodeValue);
 const input = ref("");
 const elinput = ref(null);
 const rectWidth = computed(() => {
@@ -42,18 +43,21 @@ function addOne() {
 }
 
 //监听input框，当前所选的rect值与input框绑定
-watch(input, (value) => {
-  /* ... */
-  const obj = options.find((v) => v.fill === "#0070f3");
-  if (obj) {
-    obj.text = value;
-    if (currentSelectRect.value === 0) {
-      obj.width = value.length * 10 + 30;
-    } else {
-      obj.width = value.length <= 10 ? 100 : value.length * 10 + 30 - 0;
+watch(
+  currentPropVal,
+  (value) => {
+    const obj = options.find((v) => v.fill === "#0070f3");
+    if (obj) {
+      obj.text = value;
+      if (currentSelectRect.value === 0) {
+        obj.width = value.length * 10 + 30;
+      } else {
+        obj.width = value.length <= 10 ? 100 : value.length * 10 + 30 - 0;
+      }
     }
-  }
-});
+  },
+  { deep: true }
+);
 function clickRect(item) {
   if (item.fill !== "#0070f3") {
     options.forEach((v) => {

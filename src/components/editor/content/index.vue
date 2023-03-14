@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from "vue";
-import InputRange from "/@/components/base/inputRange.vue";
-import MdiLightDelete from "~icons/mdi-light/delete";
+import { ref, reactive, computed, watch, toRaw } from "vue";
+import MultiSelection from "./multiSelection.vue";
 
 interface SelectOptions {
   label: string;
   value: number;
 }
+
+defineProps(["modelValue"]);
+const emit = defineEmits(["update:modelValue"]);
+
 const contentOptions: Array<SelectOptions> = reactive([
   {
     value: 0,
@@ -34,6 +37,9 @@ const showInputRange = computed(() => {
 });
 //简单字符串
 const simpleString = ref("");
+watch(simpleString, (value) => {
+  emit("update:modelValue", value);
+});
 //字符类
 const stringType = ref("");
 const stringTypeOptions = reactive([
@@ -94,27 +100,31 @@ const stringTypeOptions = reactive([
     value: `\\0`,
   },
 ]);
+watch(stringType, (value) => {
+  emit("update:modelValue", value);
+});
 //inputRange
 
-const inputRanges = reactive([{ first: "", last: "" }]);
+let multiSelections = reactive([{ first: "", last: "" }]);
+watch(multiSelections, (value) => {
+  emit("update:modelValue", toRaw(value));
+});
 
-function handlerRange(type: "add" | "del", ix: number = 1): void {
-  switch (type) {
-    case "add": {
-      inputRanges.push({ first: "", last: "" });
-      console.log(inputRanges);
-      break;
-    }
-    case "del": {
-      inputRanges.splice(ix, 1);
-      break;
-    }
-  }
+//
+function initElementValue() {
+  simpleString.value = "";
+  stringType.value = "";
+  // multiSelections = [{ first: "", last: "" }];
 }
 </script>
 
 <template>
-  <el-select v-model="select" class="m-2" placeholder="Select">
+  <el-select
+    v-model="select"
+    class="m-2"
+    placeholder="Select"
+    @change="initElementValue"
+  >
     <el-option
       v-for="item in contentOptions"
       :key="item.value"
@@ -141,22 +151,10 @@ function handlerRange(type: "add" | "del", ix: number = 1): void {
       </el-option>
     </el-select>
   </div>
-  <div
-    v-for="(item, index) in inputRanges"
-    class="flex items-center p-px"
+  <MultiSelection
     v-if="showInputRange(2)"
-  >
-    <InputRange
-      v-model:first-name="item.first"
-      v-model:last-name="item.last"
-    ></InputRange>
-    <MdiLightDelete
-      v-if="inputRanges.length > 1"
-      class="w-20"
-      @click="handlerRange('del', index)"
-    ></MdiLightDelete>
-    <el-button @click="handlerRange('add')">添加</el-button>
-  </div>
+    v-model="multiSelections"
+  ></MultiSelection>
 </template>
 
 <style lang="scss" scoped></style>

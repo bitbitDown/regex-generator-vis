@@ -5,7 +5,7 @@ import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import { resolve } from "path";
 import Icons from "unplugin-icons/vite";
-console.log({ Icons });
+
 function pathResolve(dir: string) {
   return resolve(process.cwd(), ".", dir);
 }
