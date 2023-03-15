@@ -106,15 +106,19 @@ watch(stringType, (value) => {
 //inputRange
 
 let multiSelections = reactive([{ first: "", last: "" }]);
-watch(multiSelections, (value) => {
-  emit("update:modelValue", toRaw(value));
-});
+watch(
+  multiSelections,
+  (value) => {
+    emit("update:modelValue", value);
+  },
+  { deep: true }
+);
 
-//
+//初始化选项
 function initElementValue() {
   simpleString.value = "";
   stringType.value = "";
-  // multiSelections = [{ first: "", last: "" }];
+  multiSelections.splice(0, multiSelections.length, { first: "", last: "" });
 }
 </script>
 

@@ -1,11 +1,14 @@
 <script setup lang="ts">
 //inputRange
-import { reactive, watch } from "vue";
+import { watch } from "vue";
 import MdiLightDelete from "~icons/mdi-light/delete";
 
 const props = defineProps(["modelValue"]);
 const emit = defineEmits(["update:modelValue"]);
-const inputRanges = reactive(props.modelValue);
+let inputRanges = props.modelValue;
+watch(props.modelValue, (v) => {
+  inputRanges = v;
+});
 watch(inputRanges, (v) => {
   emit("update:modelValue", v);
 });
@@ -35,7 +38,11 @@ function handlerRange(type: "add" | "del", ix: number = 1): void {
       class="w-20"
       @click="handlerRange('del', index)"
     ></MdiLightDelete>
-    <el-button @click="handlerRange('add')">添加</el-button>
+    <el-button
+      v-if="index === inputRanges.length - 1"
+      @click="handlerRange('add')"
+      >添加</el-button
+    >
   </div>
 </template>
 
