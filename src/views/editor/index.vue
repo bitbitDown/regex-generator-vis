@@ -56,41 +56,39 @@ function opeOfNode(value) {
 </script>
 
 <template>
-  <div class="flex p-3 w-[200px]">
-    <div class="w-80 h-96">
-      <el-tabs type="border-card">
-        <el-tab-pane label="Role"></el-tab-pane>
-        <el-tab-pane label="编辑">
-          <span class="text-xl font-bold">插入节点</span>
-          <div class="flex mt-2 w-60">
-            <Node
-              ref="nodeRef"
-              :type-list="nodeTypes"
-              class="h-20"
-              @click-node="opeOfNode"
-            >
-            </Node>
-          </div>
-          <Content v-model="contentValue"></Content>
-          <h1>量词</h1>
-          <Quantifier> </Quantifier>
-        </el-tab-pane>
-        <el-tab-pane label="测试">
-          <div
-            class="flex items-center"
-            v-for="(item, index) in regexRows"
-            :key="item.id"
+  <div>
+    <el-tabs type="border-card">
+      <el-tab-pane label="Role"></el-tab-pane>
+      <el-tab-pane label="编辑">
+        <span class="text-xl font-bold">插入节点</span>
+        <div class="flex mt-2">
+          <Node
+            ref="nodeRef"
+            :type-list="nodeTypes"
+            class="h-20 flex"
+            @click-node="opeOfNode"
           >
-            <TestRegex :rule-name="item.rule"></TestRegex>
-            <MaterialSymbolsDeleteOutline
-              class="ml-2"
-              @click="handleDel(index)"
-            ></MaterialSymbolsDeleteOutline>
-          </div>
-          <MaterialSymbolsAdd @click="handleAdd"></MaterialSymbolsAdd>
-        </el-tab-pane>
-      </el-tabs>
-    </div>
+          </Node>
+        </div>
+        <Content v-model="contentValue"></Content>
+        <h1>量词</h1>
+        <Quantifier> </Quantifier>
+      </el-tab-pane>
+      <el-tab-pane label="测试">
+        <div
+          class="flex items-center"
+          v-for="(item, index) in regexRows"
+          :key="item.id"
+        >
+          <TestRegex :rule-name="item.rule"></TestRegex>
+          <MaterialSymbolsDeleteOutline
+            class="ml-2"
+            @click="handleDel(index)"
+          ></MaterialSymbolsDeleteOutline>
+        </div>
+        <MaterialSymbolsAdd @click="handleAdd"></MaterialSymbolsAdd>
+      </el-tab-pane>
+    </el-tabs>
     <Painer ref="painerRef" class="ml-2" :node-value="nodeVal"></Painer>
   </div>
 </template>

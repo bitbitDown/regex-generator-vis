@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import App from "./App.vue";
 import "./style/index.css";
+import "element-plus/theme-chalk/dark/css-vars.css";
 
 const pinia = createPinia();
 const app = createApp(App);
